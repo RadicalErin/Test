@@ -1,0 +1,28 @@
+$noop(this is a comment - add a bracket after a noop line to activate that script)
+
+$noop(checking if originaldate and date are different, if different, set to 1)
+  $set(%_reissue%,no)
+$if($in(%date%,%originaldate%),
+  $set(%_reissue%,yes)
+)
+
+$noop(STANDARD ARTIST/FLAC)
+
+$noop(ARTIST FOLDER)
+$if2(%albumartist%,%artist%)/
+$noop(ALBUM FOLDER)
+$noop(date - album title)\($left(%originaldate%,4)\) $replace(%album%,:,-) 
+$noop([ep] or [single])$if($in(%releasetype%,single),[single] )$if($in(%releasetype%,ep),[EP] )
+$noop([yyyy reissue])$if($in(%_reissue%,yes),[%date% reissue] )
+$noop([soundtrack])$if($in(%releasetype%,soundtrack),[soundtrack] )
+$noop([special format])$if($in(%media%,CD-R),[CD-R] )$if($in(%media%,8cm CD),[8cm CD] )$if($in(%media%,Cassette),[cassette] )
+$noop([flac] or [bitrate])$if($in(%_extension%,flac),[FLAC])$if($ne(%_extension%,flac),[%_bitrate%])/
+$noop(TRACK NAME)
+$if($gt(%totaldiscs%,1),%discnumber%-,)$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)$if(%_multiartist%,%artist% - ,)%title%
+
+$noop(REDACTED
+
+$if2(%albumartist%,%artist%) - $replace(%album%,:,-) \($left(%date%,4)\) $if($in(%releasetype%,single),[single] )$if($in(%media%,CD-R),[CD-R] )$if($in(%media%,8cm CD),[8cm CD] )[FLAC]/
+$if($gt(%totaldiscs%,1),%discnumber%-,)$if($and(%albumartist%,%tracknumber%),$num(%tracknumber%,2) ,)$if(%_multiartist%,%artist% - ,)%title%
+
+)
